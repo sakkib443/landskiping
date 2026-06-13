@@ -39,7 +39,7 @@
 </div>
 
 <header x-data="{ open: false, scrolled: false }" @scroll.window="scrolled = (window.scrollY > 8)" class="sticky top-0 z-50 border-b border-sand-200 bg-white/95 backdrop-blur transition-shadow duration-300" :class="scrolled ? 'shadow-lg shadow-forest-950/5' : ''">
-    <nav class="container-x flex items-center justify-between gap-4 py-3">
+    <nav class="container-x flex items-center justify-between gap-3 py-3">
         <a href="{{ route('home') }}" class="flex shrink-0 items-center gap-2.5">
             <img src="{{ asset('images/brand/logo-mark.png') }}" alt="Landscaping BD logo" class="h-11 w-11 object-contain">
             <span class="font-display text-lg font-extrabold leading-none">
@@ -47,7 +47,7 @@
             </span>
         </a>
 
-        <div class="hidden items-center gap-x-5 xl:flex">
+        <div class="hidden items-center gap-x-4 xl:flex">
             @foreach ($nav as [$label, $url])
                 <a href="{{ $url }}" class="nav-link {{ $current === $url ? 'is-active' : '' }}">{{ $label }}</a>
             @endforeach

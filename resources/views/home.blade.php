@@ -73,7 +73,7 @@
                 <h1 class="h-display mt-6 text-3xl !text-white sm:text-4xl lg:text-[3.25rem] lg:leading-[1.1]">
                     Professional Landscaping Services in Bangladesh
                 </h1>
-                <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/80">
+                <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/80">
                     Landscaping BD provides professional landscaping, rooftop garden design, vertical gardening,
                     natural grass installation, garden development, tree plantation, landscape maintenance and
                     green space management — creating beautiful, natural and long-lasting green spaces for homes,
@@ -162,16 +162,20 @@
     </section>
 
     {{-- ======================= TRUSTED BY ======================= --}}
-    <section class="border-y border-sand-200 bg-sand-50 py-12">
-        <div class="container-x" data-reveal>
-            <p class="text-center text-xs font-bold uppercase tracking-widest text-ink-400">Trusted by leading corporate clients across Bangladesh</p>
-            <div class="mt-6 marquee" data-reveal>
+    <section class="border-y border-sand-200 bg-sand-50 py-16 sm:py-20">
+        <div class="container-x">
+            <div class="mx-auto max-w-2xl text-center" data-reveal>
+                <span class="eyebrow">Our Clients</span>
+                <h2 class="h-display mt-3 text-3xl sm:text-4xl">Trusted by leading organizations</h2>
+                <p class="mt-4 text-ink-600">From marine &amp; construction giants to national conglomerates, leading companies across Bangladesh rely on Landscaping BD.</p>
+            </div>
+            <div class="mt-12 marquee" data-reveal>
                 <div class="marquee__track">
                     @foreach ($clients as $client)
-                        <span class="marquee__item font-display text-lg font-bold text-ink-400/70 transition-colors hover:text-primary-600">{!! $client !!}</span>
+                        <span class="marquee__item font-display text-xl font-bold text-ink-400/70 transition-colors hover:text-primary-600 sm:text-2xl">{!! $client !!}</span>
                     @endforeach
                     @foreach ($clients as $client)
-                        <span class="marquee__item font-display text-lg font-bold text-ink-400/70" aria-hidden="true">{!! $client !!}</span>
+                        <span class="marquee__item font-display text-xl font-bold text-ink-400/70 sm:text-2xl" aria-hidden="true">{!! $client !!}</span>
                     @endforeach
                 </div>
             </div>
