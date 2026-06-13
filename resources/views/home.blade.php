@@ -32,7 +32,7 @@
         ['text' => 'All BD', 'label' => 'Nationwide Service'],
     ];
 
-    $clients = ['Jan De Nul', 'PowerChina', 'Sinohydro', 'Energy China', 'Bashundhara Group', 'Hyundai E&amp;C', 'Sheba Holdings', 'Buildex'];
+    $clients = ['Jan De Nul', 'PowerChina', 'Sinohydro', 'Energy China', 'Bashundhara Group', 'Hyundai E&amp;C', 'Sheba Holdings', 'Chuti Group', 'Goldsands', 'Buildex'];
 
     $steps = [
         ['Site Visit &amp; Discussion', 'We check your space and discuss requirement, budget, design idea and project goal.'],
@@ -68,8 +68,9 @@
                 </h1>
                 <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/80">
                     Landscaping BD provides professional landscaping, rooftop garden design, vertical gardening,
-                    natural grass installation, garden development, tree plantation and landscape maintenance —
-                    creating beautiful, long-lasting green spaces across Bangladesh.
+                    natural grass installation, garden development, tree plantation, landscape maintenance and
+                    green space management — creating beautiful, natural and long-lasting green spaces for homes,
+                    offices, rooftops, factories, resorts, restaurants and commercial projects across Bangladesh.
                 </p>
                 <div class="mt-9 flex flex-wrap justify-center gap-3">
                     <a href="{{ route('contact') }}" class="btn-primary">
@@ -117,7 +118,7 @@
                     finishing, plant quality and long-term service.
                 </p>
                 <ul class="mt-6 grid gap-x-6 gap-y-3 sm:grid-cols-2">
-                    @foreach (['Professional landscaping team', 'Creative rooftop &amp; garden design', 'Quality grass, plants &amp; materials', 'Affordable &amp; practical planning', 'All Bangladesh service', 'After-service &amp; maintenance support'] as $point)
+                    @foreach (['Professional landscaping team', 'Creative rooftop &amp; garden design', 'Quality grass, plants &amp; materials', 'Affordable &amp; practical planning', 'All Bangladesh service', 'After-service &amp; maintenance support', 'Industrial support service available'] as $point)
                         <li class="flex items-start gap-2.5 text-sm font-medium text-ink-800">
                             <svg class="mt-0.5 h-5 w-5 shrink-0 text-primary-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.7 5.2a1 1 0 010 1.4l-7.5 7.5a1 1 0 01-1.4 0L3.3 9.6a1 1 0 011.4-1.4l3.1 3.1 6.8-6.8a1 1 0 011.4 0z" clip-rule="evenodd"/></svg>
                             {!! $point !!}

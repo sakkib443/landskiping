@@ -33,8 +33,8 @@
             <div class="relative" data-reveal="left">
                 <img src="{{ asset('images/projects/p15-img1-615x820.png') }}" alt="Landscaping BD project" class="aspect-[4/5] w-full rounded-3xl object-cover shadow-premium">
                 <div class="absolute -bottom-6 -right-3 hidden rounded-2xl bg-primary-500 px-6 py-5 text-white shadow-premium sm:block">
-                    <p class="font-display text-3xl font-bold leading-none">Since</p>
-                    <p class="mt-1 text-xs font-medium text-white/90">Trusted green<br>partner in BD</p>
+                    <p class="font-display text-2xl font-bold leading-tight">Trusted</p>
+                    <p class="mt-1 text-xs font-medium text-white/90">green partner<br>across Bangladesh</p>
                 </div>
             </div>
             <div data-reveal="right">

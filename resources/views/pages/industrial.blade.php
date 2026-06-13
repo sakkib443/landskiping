@@ -18,6 +18,7 @@
     ];
     $suitableFor = ['Jetty construction', 'Riverbank protection', 'Industrial projects', 'Factory construction', 'Steel structure work', 'Marine construction', 'Bridge & heavy construction', 'Retaining wall work', 'Excavation support', 'Development projects'];
     $geoIncludes = ['Geo tube supply', 'Site inspection support', 'Geo tube placement', 'Filling & installation', 'Riverbank protection', 'Erosion control', 'Slope protection', 'Project-based service'];
+    $geoSuitable = ['Riverbank protection', 'Coastal area protection', 'Land reclamation', 'Water management', 'Marine & civil projects', 'Soil erosion control'];
 @endphp
 
 @section('content')
@@ -66,7 +67,7 @@
             <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($steel as $i => [$title, $desc, $icon])
                     <div class="card group" data-reveal style="--reveal-delay: {{ ($i % 3) * 100 }}ms">
-                        <span class="icon-badge bg-secondary-100 text-sky-600" style="background-color: color-mix(in srgb, var(--color-sky-500) 14%, white);">@svg('heroicon-o-'.$icon, 'h-6 w-6')</span>
+                        <span class="icon-badge bg-sky-500/10 text-sky-600">@svg('heroicon-o-'.$icon, 'h-6 w-6')</span>
                         <h3 class="mt-5 font-display text-base font-bold text-ink-900">{{ $title }}</h3>
                         <p class="mt-2 text-sm leading-relaxed text-ink-600">{{ $desc }}</p>
                     </div>
@@ -117,6 +118,14 @@
                         </li>
                     @endforeach
                 </ul>
+                <div class="mt-6">
+                    <p class="text-xs font-bold uppercase tracking-wider text-ink-500">Suitable For</p>
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        @foreach ($geoSuitable as $tag)
+                            <span class="rounded-full bg-sand-100 px-3 py-1.5 text-xs font-medium text-ink-700">{{ $tag }}</span>
+                        @endforeach
+                    </div>
+                </div>
                 <div class="mt-7 flex flex-wrap gap-3">
                     <a href="{{ route('contact') }}" class="btn-primary">Request Price</a>
                     <a href="tel:+8801777539790" class="btn-outline">Call Now</a>
