@@ -5,6 +5,7 @@
 @php
     // --- Real photos extracted from the company profile ---
     $heroBg  = 'images/projects/p15-img3-672x395.png';
+    $heroSlides = ['images/projects/p15-img3-672x395.png', 'images/projects/p15-img1-615x820.png', 'images/projects/p13-img1-681x511.png', 'images/projects/p12-img1-1210x681.png', 'images/projects/p14-img2-1383x778.png'];
     $aboutImg = 'images/projects/p15-img1-615x820.png';
     $bandImg = 'images/projects/p12-img1-1210x681.png';
     $ctaImg  = 'images/projects/p14-img2-1383x778.png';
@@ -54,8 +55,14 @@
 @section('content')
 
     {{-- ======================= HERO ======================= --}}
-    <section class="relative isolate overflow-hidden">
-        <img src="{{ asset($heroBg) }}" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
+    <section class="relative isolate overflow-hidden" x-data="{ slides: {{ \Illuminate\Support\Js::from(array_map(fn($s) => asset($s), $heroSlides)) }}, current: 0, timer: null, reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches, init() { if (!this.reduced && this.slides.length > 1) this.start(); }, start() { this.timer = setInterval(() => this.next(), 5000); }, stop() { clearInterval(this.timer); this.timer = null; }, next() { this.current = (this.current + 1) % this.slides.length; }, go(i) { this.current = i; } }" @mouseenter="stop()" @mouseleave="if (!reduced && !timer) start()">
+        <img src="{{ asset($heroSlides[0]) }}" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
+        <template x-for="(src, i) in slides" :key="i">
+            <img :src="src" alt="" x-show="i === current"
+                x-transition:enter="transition-opacity duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                x-transition:leave="transition-opacity duration-1000" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                class="absolute inset-0 -z-10 h-full w-full object-cover">
+        </template>
         <div class="absolute inset-0 -z-10 bg-gradient-to-br from-forest-950/92 via-forest-900/82 to-forest-800/72"></div>
         <div class="pointer-events-none absolute -right-32 -top-24 -z-10 h-96 w-96 rounded-full bg-primary-500/25 blur-3xl"></div>
         <div class="pointer-events-none absolute -left-24 bottom-0 -z-10 h-80 w-80 rounded-full bg-sky-500/15 blur-3xl"></div>
@@ -82,6 +89,12 @@
                 </div>
             </div>
         </div>
+
+        <div class="absolute inset-x-0 bottom-6 z-10 flex justify-center gap-2">
+            <template x-for="(s, i) in slides" :key="'dot' + i">
+                <button type="button" @click="go(i)" :aria-label="'Go to slide ' + (i + 1)" class="h-2 rounded-full transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400" :class="i === current ? 'w-6 bg-primary-400' : 'w-2.5 bg-white/50 hover:bg-white/80'"></button>
+            </template>
+        </div>
     </section>
 
     {{-- ======================= FEATURE BAR (overlapping) ======================= --}}
@@ -101,9 +114,9 @@
 
     {{-- ======================= ABOUT + STATS ======================= --}}
     <section class="section">
-        <div class="container-x grid items-center gap-12 lg:grid-cols-2">
-            <div class="relative" data-reveal="left">
-                <img src="{{ asset($aboutImg) }}" alt="Landscaping BD completed garden" class="aspect-[4/5] w-full rounded-3xl object-cover shadow-premium">
+        <div class="container-x grid items-center gap-12 lg:grid-cols-2 lg:items-stretch">
+            <div class="relative lg:h-full" data-reveal="left">
+                <img src="{{ asset($aboutImg) }}" alt="Landscaping BD completed garden" class="aspect-[4/5] w-full rounded-3xl object-cover shadow-premium lg:absolute lg:inset-0 lg:aspect-auto lg:h-full lg:w-full">
                 <div class="absolute -bottom-6 -right-3 hidden rounded-2xl bg-primary-500 px-6 py-5 text-white shadow-premium sm:block">
                     <p class="font-display text-3xl font-extrabold leading-none">100%</p>
                     <p class="mt-1 text-xs font-medium text-white/90">Customer<br>Satisfaction Focus</p>
@@ -152,10 +165,15 @@
     <section class="border-y border-sand-200 bg-sand-50 py-12">
         <div class="container-x" data-reveal>
             <p class="text-center text-xs font-bold uppercase tracking-widest text-ink-400">Trusted by leading corporate clients across Bangladesh</p>
-            <div class="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-                @foreach ($clients as $client)
-                    <span class="font-display text-lg font-bold text-ink-400/70 transition-colors hover:text-primary-600">{!! $client !!}</span>
-                @endforeach
+            <div class="mt-6 marquee" data-reveal>
+                <div class="marquee__track">
+                    @foreach ($clients as $client)
+                        <span class="marquee__item font-display text-lg font-bold text-ink-400/70 transition-colors hover:text-primary-600">{!! $client !!}</span>
+                    @endforeach
+                    @foreach ($clients as $client)
+                        <span class="marquee__item font-display text-lg font-bold text-ink-400/70" aria-hidden="true">{!! $client !!}</span>
+                    @endforeach
+                </div>
             </div>
         </div>
     </section>

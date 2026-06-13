@@ -21,8 +21,20 @@
                 <p class="mt-4 text-ink-600">Every project is designed and delivered with precision, creativity and care — click a category to explore our portfolio.</p>
             </div>
 
+            @php
+                $projects = \App\Models\Project::orderBy('sort_order')->get();
+                $catLabels = [
+                    'rooftop'       => 'Rooftop Garden',
+                    'vertical'      => 'Vertical Gardening',
+                    'grass'         => 'Natural Grass',
+                    'garden-design' => 'Garden Design',
+                    'commercial'    => 'Commercial',
+                    'industrial'    => 'Industrial',
+                ];
+            @endphp
+
             {{-- Alpine filterable wrapper --}}
-            <div x-data="{ cat: 'all' }" class="mt-12">
+            <div x-data="{ cat: 'all', lb: false, idx: 0, items: {{ \Illuminate\Support\Js::from($projects->map(fn($p) => ['src' => asset($p->image), 'title' => $p->title])->values()) }}, open(i) { this.idx = i; this.lb = true; document.body.style.overflow = 'hidden'; this.$nextTick(() => this.$refs.lbclose && this.$refs.lbclose.focus()); }, close() { this.lb = false; document.body.style.overflow = ''; }, prev() { this.idx = (this.idx - 1 + this.items.length) % this.items.length; }, next() { this.idx = (this.idx + 1) % this.items.length; } }" @keydown.escape.window="close()" @keydown.arrow-left.window="lb && prev()" @keydown.arrow-right.window="lb && next()" class="mt-12">
 
                 {{-- Filter button row --}}
                 <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3" data-reveal>
@@ -51,20 +63,7 @@
                     @endforeach
                 </div>
 
-                {{-- Gallery grid — database-driven --}}
-                @php
-                    $projects = \App\Models\Project::orderBy('sort_order')->get();
-
-                    $catLabels = [
-                        'rooftop'       => 'Rooftop Garden',
-                        'vertical'      => 'Vertical Gardening',
-                        'grass'         => 'Natural Grass',
-                        'garden-design' => 'Garden Design',
-                        'commercial'    => 'Commercial',
-                        'industrial'    => 'Industrial',
-                    ];
-                @endphp
-
+                {{-- Gallery grid — database-driven (uses $projects defined above) --}}
                 <div class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
                     @foreach ($projects as $i => $project)
                         <div
@@ -84,10 +83,11 @@
                                 src="{{ asset($project->image) }}"
                                 alt="{{ $project->title }}"
                                 loading="lazy"
-                                class="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
+                                @click="open({{ $i }})"
+                                class="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 cursor-pointer">
 
-                            {{-- Hover caption overlay --}}
-                            <div class="absolute inset-0 flex items-end bg-gradient-to-t from-forest-950/80 via-forest-950/20 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            {{-- Hover caption overlay (pointer-events-none so the image click reaches the lightbox) --}}
+                            <div class="pointer-events-none absolute inset-0 flex items-end bg-gradient-to-t from-forest-950/80 via-forest-950/20 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                                 <div>
                                     <p class="text-sm font-semibold leading-snug text-white">{{ $project->title }}</p>
                                     <span class="mt-1 inline-flex items-center rounded-full bg-primary-500/90 px-2.5 py-0.5 text-xs font-medium text-white">
@@ -105,6 +105,24 @@
                     class="mt-16 flex flex-col items-center justify-center gap-4 py-10 text-center text-ink-500">
                     @svg('heroicon-o-photo', 'h-12 w-12 opacity-30')
                     <p class="text-base font-medium">No photos in this category yet.</p>
+                </div>
+
+                {{-- Lightbox modal --}}
+                <div x-show="lb" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4 sm:p-8" x-transition.opacity @click.self="close()" role="dialog" aria-modal="true" aria-label="Gallery image viewer">
+                    <div class="absolute inset-0 -z-10 bg-forest-950/90 backdrop-blur-sm"></div>
+                    <button x-ref="lbclose" type="button" @click="close()" aria-label="Close" class="absolute right-4 top-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/30 transition hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+                    </button>
+                    <button type="button" @click="prev()" aria-label="Previous image" class="absolute left-3 sm:left-6 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/30 transition hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+                    </button>
+                    <button type="button" @click="next()" aria-label="Next image" class="absolute right-3 sm:right-6 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/30 transition hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+                    </button>
+                    <figure class="relative max-h-full max-w-5xl" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
+                        <img :src="items[idx] && items[idx].src" :alt="items[idx] && items[idx].title" class="max-h-[80vh] w-auto rounded-2xl object-contain shadow-premium">
+                        <figcaption class="mt-3 text-center text-sm font-medium text-white/90" x-text="items[idx] && items[idx].title"></figcaption>
+                    </figure>
                 </div>
 
             </div>{{-- /x-data --}}
