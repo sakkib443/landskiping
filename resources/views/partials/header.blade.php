@@ -50,7 +50,7 @@
                 </span>
             </a>
 
-            <div class="hidden items-center gap-6 xl:flex">
+            <div class="hidden items-center gap-x-5 xl:flex">
                 @foreach ($nav as [$label, $url])
                     <a href="{{ $url }}" class="nav-link {{ $current === $url ? '!text-primary-600' : '' }}">{{ $label }}</a>
                 @endforeach

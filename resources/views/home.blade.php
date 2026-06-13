@@ -63,7 +63,7 @@
         <div class="container-x pb-44 pt-24 text-center sm:pt-32 lg:pb-52">
             <div class="mx-auto max-w-3xl" data-reveal>
                 <span class="eyebrow-light">Design • Development • Maintenance</span>
-                <h1 class="h-display mt-6 text-4xl !text-white sm:text-5xl lg:text-[3.7rem] lg:leading-[1.08]">
+                <h1 class="h-display mt-6 text-3xl !text-white sm:text-4xl lg:text-[3.25rem] lg:leading-[1.1]">
                     Professional Landscaping Services in Bangladesh
                 </h1>
                 <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/80">

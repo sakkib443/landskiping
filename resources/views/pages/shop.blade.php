@@ -4,85 +4,7 @@
 @section('meta_description', 'Order quality landscaping and gardening products from Landscaping BD — natural grass, indoor & outdoor plants, flower plants, trees, garden pots, vertical garden items, lights and accessories. Delivered across Bangladesh.')
 
 @php
-    $products = [
-        [
-            'name'  => 'Natural Carpet Grass',
-            'desc'  => 'Fresh natural carpet grass for lawns, rooftops, gardens and outdoor areas.',
-            'icon'  => 'swatch',
-            'bg'    => 'bg-primary-100',
-            'text'  => 'text-primary-700',
-        ],
-        [
-            'name'  => 'Bermuda Grass',
-            'desc'  => 'Durable Bermuda grass ideal for open lawns, sports fields and rooftop gardens.',
-            'icon'  => 'squares-2x2',
-            'bg'    => 'bg-primary-100',
-            'text'  => 'text-primary-700',
-        ],
-        [
-            'name'  => 'Indoor Plants',
-            'desc'  => 'Beautiful air-purifying indoor plants for living rooms, offices and balconies.',
-            'icon'  => 'home-modern',
-            'bg'    => 'bg-forest-100',
-            'text'  => 'text-forest-700',
-        ],
-        [
-            'name'  => 'Outdoor Plants',
-            'desc'  => 'Hardy outdoor plants for garden beds, rooftops and commercial landscapes.',
-            'icon'  => 'sun',
-            'bg'    => 'bg-gold-300/30',
-            'text'  => 'text-forest-700',
-        ],
-        [
-            'name'  => 'Flower Plants',
-            'desc'  => 'Colourful seasonal and perennial flower plants to brighten any space.',
-            'icon'  => 'sparkles',
-            'bg'    => 'bg-primary-100',
-            'text'  => 'text-primary-700',
-        ],
-        [
-            'name'  => 'Trees & Hedges',
-            'desc'  => 'Fruit trees, shade trees, privacy hedges and ornamental trees ready to plant.',
-            'icon'  => 'scissors',
-            'bg'    => 'bg-forest-100',
-            'text'  => 'text-forest-700',
-        ],
-        [
-            'name'  => 'Garden Pots & Planters',
-            'desc'  => 'Ceramic, clay, fibreglass and plastic planters in all shapes and sizes.',
-            'icon'  => 'archive-box',
-            'bg'    => 'bg-sand-100',
-            'text'  => 'text-ink-600',
-        ],
-        [
-            'name'  => 'Vertical Garden Materials',
-            'desc'  => 'Panels, frames, pocket planters and support systems for living walls.',
-            'icon'  => 'squares-plus',
-            'bg'    => 'bg-primary-100',
-            'text'  => 'text-primary-700',
-        ],
-        [
-            'name'  => 'Garden Lights',
-            'desc'  => 'Solar and electric outdoor lights for gardens, pathways and rooftop décor.',
-            'icon'  => 'light-bulb',
-            'bg'    => 'bg-gold-300/30',
-            'text'  => 'text-forest-700',
-        ],
-        [
-            'name'  => 'Soil & Fertilizer',
-            'desc'  => 'Potting mix, organic compost, fertilizer and soil conditioners for healthy plants.',
-            'icon'  => 'beaker',
-            'bg'    => 'bg-sand-100',
-            'text'  => 'text-ink-600',
-        ],
-        [
-            'name'  => 'Gardening Tools & Accessories',
-            'desc'  => 'Spades, shears, sprayers, gloves, hoses and all essential gardening tools.',
-            'icon'  => 'wrench-screwdriver',
-            'bg'    => 'bg-forest-100',
-            'text'  => 'text-forest-700',
-        ],
-    ];
+    $products = \App\Models\Product::orderBy('sort_order')->get();
 
     $waLink    = 'https://wa.me/8801777539790?text=Hi%20Landscaping%20BD,%20I%20want%20to%20order%20products';
     $waProduct = function (string $name) {
@@ -144,18 +66,18 @@
                         style="--reveal-delay: {{ ($i % 3) * 80 }}ms">
 
                         {{-- Icon badge --}}
-                        <span class="icon-badge {{ $product['bg'] }} {{ $product['text'] }} transition-colors duration-300 group-hover:bg-primary-500 group-hover:text-white">
-                            @svg('heroicon-o-' . $product['icon'], 'h-6 w-6')
+                        <span class="icon-badge bg-primary-100 text-primary-700 transition-colors duration-300 group-hover:bg-primary-500 group-hover:text-white">
+                            @svg('heroicon-o-'.$product->icon, 'h-6 w-6')
                         </span>
 
                         {{-- Content --}}
-                        <h3 class="mt-5 font-display text-lg font-bold text-ink-900">{{ $product['name'] }}</h3>
-                        <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-600">{{ $product['desc'] }}</p>
+                        <h3 class="mt-5 font-display text-lg font-bold text-ink-900">{{ $product->name }}</h3>
+                        <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-600">{{ $product->description }}</p>
 
                         {{-- Links --}}
                         <div class="mt-5 flex flex-wrap items-center gap-3 border-t border-sand-200 pt-4">
                             <a
-                                href="{{ $waProduct($product['name']) }}"
+                                href="{{ $waProduct($product->name) }}"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 class="inline-flex items-center gap-1.5 rounded-full bg-primary-500 px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all hover:bg-primary-600 hover:shadow-primary-600/30">

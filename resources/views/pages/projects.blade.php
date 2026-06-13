@@ -55,18 +55,8 @@
         ],
     ];
 
-    $galleryPhotos = [
-        'images/projects/p13-img1-681x511.png',
-        'images/projects/p13-img2-640x480.png',
-        'images/projects/p13-img3-576x433.png',
-        'images/projects/p13-img4-567x421.png',
-        'images/projects/p13-img5-807x605.png',
-        'images/projects/p13-img6-615x461.png',
-        'images/projects/p15-img1-615x820.png',
-        'images/projects/p15-img2-540x407.png',
-        'images/projects/p15-img4-615x820.png',
-        'images/projects/p15-img5-615x820.png',
-    ];
+    // Featured Work — database-driven
+    $featured = \App\Models\Project::where('is_featured', true)->orderBy('sort_order')->get();
 @endphp
 
 @section('content')
@@ -139,7 +129,7 @@
         </div>
     </section>
 
-    {{-- Featured Work gallery strip --}}
+    {{-- Featured Work gallery strip — database-driven --}}
     <section class="section">
         <div class="container-x">
             <div class="mx-auto max-w-2xl text-center" data-reveal>
@@ -149,14 +139,14 @@
             </div>
 
             <div class="mt-14 columns-2 gap-4 sm:columns-3 lg:columns-4 xl:columns-5 [column-fill:_balance]">
-                @foreach ($galleryPhotos as $i => $photo)
+                @foreach ($featured as $i => $project)
                     <div
                         class="group mb-4 break-inside-avoid overflow-hidden rounded-2xl shadow-sm ring-1 ring-forest-950/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-premium"
                         data-reveal
                         style="--reveal-delay: {{ ($i % 5) * 90 }}ms">
                         <img
-                            src="{{ asset($photo) }}"
-                            alt="Landscaping BD project"
+                            src="{{ asset($project->image) }}"
+                            alt="{{ $project->title }}"
                             class="w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
                     </div>
                 @endforeach

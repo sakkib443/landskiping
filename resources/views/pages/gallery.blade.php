@@ -51,56 +51,24 @@
                     @endforeach
                 </div>
 
-                {{-- Gallery grid --}}
+                {{-- Gallery grid — database-driven --}}
                 @php
-                    /**
-                     * Each entry: [file, category-key, caption]
-                     *
-                     * Categorisation logic:
-                     *  p12-*  — Natural Grass (Bermuda carpet grass installation shots)
-                     *  p13-*  — Garden Design / Commercial (finished private & commercial gardens)
-                     *  p14-*  — Industrial / Commercial (large-scale / industrial sites)
-                     *  p15-*  — Rooftop Garden / Vertical Gardening / Garden Design
-                     */
-                    $photos = [
-                        // ── Natural Grass ──────────────────────────────────────
-                        ['p12-img1-1210x681.png',   'grass',         'Bermuda Grass Lawn Installation'],
-                        ['p12-img2-640x480.png',    'grass',         'Natural Carpet Grass — Close-up'],
-                        ['p12-img3-1383x624.png',   'grass',         'Wide Lawn — Grass Laying'],
-                        ['p12-img4-1210x681.png',   'grass',         'Rooftop Grass Turf'],
-                        ['p12-img5-1210x546.png',   'grass',         'Outdoor Carpet Grass Installation'],
-                        ['p12-img6-800x600.png',    'grass',         'Finished Natural Grass Area'],
+                    $projects = \App\Models\Project::orderBy('sort_order')->get();
 
-                        // ── Garden Design / Commercial ─────────────────────────
-                        ['p13-img1-681x511.png',    'garden-design', 'Private Garden — Full Development'],
-                        ['p13-img2-640x480.png',    'commercial',    'Commercial Landscape — Entry Zone'],
-                        ['p13-img3-576x433.png',    'garden-design', 'Flower Beds & Hedge Design'],
-                        ['p13-img4-567x421.png',    'garden-design', 'Garden Pathway & Planting'],
-                        ['p13-img5-807x605.png',    'commercial',    'Resort Landscape & Green Wall'],
-                        ['p13-img6-615x461.png',    'commercial',    'Outdoor Sitting Area — Landscaping'],
-
-                        // ── Industrial ─────────────────────────────────────────
-                        ['p14-img1-1383x778.png',   'industrial',    'Industrial Site Greening'],
-                        ['p14-img2-1383x778.png',   'industrial',    'Factory Perimeter Landscaping'],
-                        ['p14-img3-922x692.png',    'industrial',    'Industrial Complex — Green Zone'],
-                        ['p14-img4-922x692.png',    'industrial',    'Boundary Planting — Industrial'],
-                        ['p14-img5-1383x778.png',   'industrial',    'Large-scale Industrial Landscape'],
-                        ['p14-img6-1383x778.png',   'industrial',    'Site Landscape — Completed View'],
-
-                        // ── Rooftop & Vertical Gardening ──────────────────────
-                        ['p15-img1-615x820.png',    'rooftop',       'Rooftop Garden — Full View'],
-                        ['p15-img2-540x407.png',    'rooftop',       'Rooftop Seating & Green Lawn'],
-                        ['p15-img3-672x395.png',    'vertical',      'Vertical Garden — Green Wall'],
-                        ['p15-img4-615x820.png',    'rooftop',       'Rooftop Garden — Plants & Walkway'],
-                        ['p15-img5-615x820.png',    'vertical',      'Vertical Gardening — Office Facade'],
-                        ['p15-img6-615x461.png',    'rooftop',       'Rooftop Landscape — Overview'],
+                    $catLabels = [
+                        'rooftop'       => 'Rooftop Garden',
+                        'vertical'      => 'Vertical Gardening',
+                        'grass'         => 'Natural Grass',
+                        'garden-design' => 'Garden Design',
+                        'commercial'    => 'Commercial',
+                        'industrial'    => 'Industrial',
                     ];
                 @endphp
 
                 <div class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
-                    @foreach ($photos as $i => [$file, $category, $caption])
+                    @foreach ($projects as $i => $project)
                         <div
-                            x-show="cat === 'all' || cat === '{{ $category }}'"
+                            x-show="cat === 'all' || cat === '{{ $project->category }}'"
                             x-transition:enter="transition ease-out duration-300"
                             x-transition:enter-start="opacity-0 scale-95"
                             x-transition:enter-end="opacity-100 scale-100"
@@ -113,27 +81,17 @@
 
                             {{-- Photo --}}
                             <img
-                                src="{{ asset('images/projects/' . $file) }}"
-                                alt="{{ $caption }}"
+                                src="{{ asset($project->image) }}"
+                                alt="{{ $project->title }}"
                                 loading="lazy"
                                 class="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
 
                             {{-- Hover caption overlay --}}
                             <div class="absolute inset-0 flex items-end bg-gradient-to-t from-forest-950/80 via-forest-950/20 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                                 <div>
-                                    <p class="text-sm font-semibold leading-snug text-white">{{ $caption }}</p>
+                                    <p class="text-sm font-semibold leading-snug text-white">{{ $project->title }}</p>
                                     <span class="mt-1 inline-flex items-center rounded-full bg-primary-500/90 px-2.5 py-0.5 text-xs font-medium text-white">
-                                        @php
-                                            $catLabels = [
-                                                'rooftop'       => 'Rooftop Garden',
-                                                'vertical'      => 'Vertical Gardening',
-                                                'grass'         => 'Natural Grass',
-                                                'garden-design' => 'Garden Design',
-                                                'commercial'    => 'Commercial',
-                                                'industrial'    => 'Industrial',
-                                            ];
-                                        @endphp
-                                        {{ $catLabels[$category] ?? $category }}
+                                        {{ $catLabels[$project->category] ?? $project->category }}
                                     </span>
                                 </div>
                             </div>
